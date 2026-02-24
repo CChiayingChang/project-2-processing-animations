@@ -1,30 +1,28 @@
-int monsterX;
-int monsterangle;
-
+int monsterX, monsterangle, R;
 color red=#FF0000;
 
 void setup () {
   size (700, 700);
   monsterX=0;
+  R=225;
 }
 
 void draw () {
-  background (225);
-  monster (monsterX, 350, monsterangle);
+  background (R, 0, 0);
+  monster (monsterX, 350);
   println (mouseX-350, mouseY-350);
  monsterX=monsterX+5;
   if (monsterX>900) {
     monsterX=-200;
+    R=225;  
   }
-  monsterangle=monsterangle+2;
+  R=R-7/4; //ig this uses fractions, not decimals
 }
 
-void monster (int x, int y, int angle) {
+void monster (int x, int y) {
   pushMatrix ();
   
     translate (x, y);
-    
-    rotate(radians(angle));
     
     //main body (torso)
     stroke (0);
@@ -42,7 +40,7 @@ void monster (int x, int y, int angle) {
     
     //head
     strokeWeight (2);
-    stroke (225);
+    stroke (R, 0, 0);
     circle (0, -150, 100);
     //eyes
     fill (red);
@@ -51,9 +49,10 @@ void monster (int x, int y, int angle) {
     
     //arms
     stroke (0);
-    strokeWeight (10);
-    line (-100, -100, -100, 150); //left arm
-    line (100, -100, 100, 150); //right arm
+    fill (0);
+    strokeWeight (1);
+    triangle (-104, -92, -86, -83, -92, 150); //left arm
+    triangle (104, -92, 86, -83, 92, 150); //right arm
   
   popMatrix ();
 }
