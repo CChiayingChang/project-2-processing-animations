@@ -1,6 +1,6 @@
 //hope: getting a house in the future
 
-int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter;
+int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX;
 
 void setup () {
   size (600, 600);
@@ -9,6 +9,9 @@ void setup () {
   redcarX=0;
   blackcarX=0;
   wingcounter=0;
+  birdX=590;
+  wingangle=0;
+  wingX=585;
 }
 
 void draw () {
@@ -31,26 +34,55 @@ void draw () {
     
     house (100, 200);
     
-    bush (85, 450);
-    bush (470, 450);
+    fill (157, 156, 156);
+    rect (0, 475, 600, 125); //road
+    fill (225);
+    rect (15, 525, 50, 15); //white lines on road
+    rect (115, 525, 50, 15);
+    rect (215, 525, 50, 15);
+    rect (315, 525, 50, 15);
+    rect (415, 525, 50, 15);
+    rect (515, 525, 50, 15);
     
-    blackcar (blackcarX, 400);
+    bush (85, 425);
+    bush (470, 425);
+    
+    blackcar (blackcarX, 415);
     blackcarX=blackcarX+9;
     if (blackcarX>650) {
       blackcarX=-50;
     }
     
-    redcar (redcarX, 425);
+    redcar (redcarX, 475);
     redcarX=redcarX+10;
     if (redcarX>650) {
       redcarX=-50;
     }
     
-    bird (100, 100);
+    bird (birdX, 100);
+    birdX=birdX-5;
+    if (birdX>610) {
+      birdX=610;
+    }
+    wing (wingX, 90, wingangle);
+    wingX=wingX-5;
+    wingcounter=wingcounter+5;
+    if (wingX>615) {
+      wingX=605;
+    }
+    if (wingcounter<50) {
+      wingangle=0;
+    }
+    if (wingcounter>50) {
+      wingangle=-90;
+    }
+    if (wingcounter==100) {
+      wingcounter=0;
+    }
   }
   
   
-  println (mouseX-100, mouseY-200);
+  println (mouseX-100, mouseY);
 }
 
 void key (int x, int y, int angle) {
@@ -132,6 +164,7 @@ void blackcar (int x, int y) {
 void house (int x, int y) {
   pushMatrix ();
     translate (x, y);
+    stroke (0);
     fill (225);
     rect (0, 0, 400, 275);
     fill (111, 64, 6);
@@ -154,8 +187,17 @@ void bush (int x, int y) {
 void bird (int x, int y) {
   pushMatrix ();
     translate (x, y);
-    rotate(QUARTER_PI+HALF_PI);
-    ellipse (0, 0, 50, 25);
-    circle (
+    circle (-20, -20, 25);
+    rotate(QUARTER_PI);
+    ellipse (0, 0, 55, 30);
+  popMatrix ();
+}
+
+void wing (int x, int y, int angle) {
+  pushMatrix ();
+    translate (x, y);
+    rotate(radians(angle));
+    fill (0);
+    arc (22, 0, 40, 35, 0, PI);
   popMatrix ();
 }
