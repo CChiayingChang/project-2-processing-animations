@@ -1,32 +1,56 @@
 //hope: getting a house in the future
 
-int keyY, keyX;
-int angle;
+int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter;
 
 void setup () {
   size (600, 600);
   keyY=100;
   keyX=300;
-  
+  redcarX=0;
+  blackcarX=0;
+  wingcounter=0;
 }
 
 void draw () {
   background (0);
-  //key (keyX, keyY, angle);
+  
+  key (keyX, keyY, keyangle);
   keyY=keyY+5;
   if (keyY>300) {
-    angle=angle+5;
+    keyangle=keyangle+5;
     keyX=keyX+4;
   }
-  //hand (200, 500);
-  if (angle>90) {
-    angle=90;
+  
+  hand (200, 500);
+  if (keyangle>90) {
+    keyangle=90;
     keyY=450;
     keyX=375;
-    delay (1000);
+    //delay (1000);
     background (126, 219, 227);
+    
+    house (100, 200);
+    
+    bush (85, 450);
+    bush (470, 450);
+    
+    blackcar (blackcarX, 400);
+    blackcarX=blackcarX+9;
+    if (blackcarX>650) {
+      blackcarX=-50;
+    }
+    
+    redcar (redcarX, 425);
+    redcarX=redcarX+10;
+    if (redcarX>650) {
+      redcarX=-50;
+    }
+    
+    bird (100, 100);
   }
-  println (mouseX-200, mouseY-500);
+  
+  
+  println (mouseX-100, mouseY-200);
 }
 
 void key (int x, int y, int angle) {
@@ -62,6 +86,76 @@ void hand (int x, int y) {
   popMatrix ();
 }
 
-void house () {
-  
+void redcar (int x, int y) {
+ pushMatrix ();
+ translate (x, y);
+   scale (0.7);
+   fill (225, 0, 0);
+   rect (0, 0, 200, 100, 45);//the top of the car the last argument is for the roundness of the corners, can also do individually
+   fill (186, 221, 224);
+   rect (140, 10, 50, 50, 0, 200, 0, 0); //window
+   fill (225, 0, 0);
+   rect (-25, 50, 300, 85, 50, 50, 20, 20); //the bottom of the car
+   fill (0);
+   circle (30, 130, 75); //left wheel
+   circle (185, 130, 75); //right wheel
+   rect (-40, 105, 15, 20); //exhaust pipe
+   fill (162, 162, 162);
+   circle (30, 130, 40); //middle of left wheel
+   circle (185, 130, 40); //middle of right wheel
+ popMatrix ();
+}
+
+void blackcar (int x, int y) {
+ pushMatrix ();
+ translate (x, y);
+   scale (0.6);
+   fill (0);
+   stroke (155, 155, 155);
+   rect (0, 0, 200, 100, 45);//the top of the car the last argument is for the roundness of the corners, can also do individually
+   fill (186, 221, 224);
+   rect (140, 10, 50, 50, 0, 200, 0, 0); //window
+   fill (0);
+   stroke (155, 155, 155);
+   rect (-25, 50, 300, 85, 50, 50, 20, 20); //the bottom of the car
+   fill (0);
+   rect (-40, 105, 15, 20); //exhaust pipe
+   stroke (155, 155, 155);
+   circle (30, 130, 75); //left wheel
+   circle (185, 130, 75); //right wheel
+   fill (162, 162, 162);
+   circle (30, 130, 40); //middle of left wheel
+   circle (185, 130, 40); //middle of right wheel
+ popMatrix ();
+}
+
+void house (int x, int y) {
+  pushMatrix ();
+    translate (x, y);
+    fill (225);
+    rect (0, 0, 400, 275);
+    fill (111, 64, 6);
+    triangle (-75, 50, 200, -150, 475, 50);
+  popMatrix ();
+}
+
+void bush (int x, int y) {
+  pushMatrix ();
+    translate (x, y);
+    fill (84, 167, 68);
+    stroke (84, 167, 68);
+    circle (0, 0, 100);
+    circle (-50, 5, 90);
+    circle (50, 15, 110);
+    circle (-15 ,25, 105);
+  popMatrix ();
+}
+
+void bird (int x, int y) {
+  pushMatrix ();
+    translate (x, y);
+    rotate(QUARTER_PI+HALF_PI);
+    ellipse (0, 0, 50, 25);
+    circle (
+  popMatrix ();
 }
