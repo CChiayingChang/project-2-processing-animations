@@ -1,17 +1,19 @@
 //hope: getting a house in the future
 
-int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX;
+int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, smokeX, smokeY, wheelangleR, wheelangleB;
 
 void setup () {
   size (600, 600);
   keyY=100;
   keyX=300;
   redcarX=0;
-  blackcarX=0;
+  blackcarX=600;
   wingcounter=0;
-  birdX=590;
+  birdX=10;
   wingangle=0;
-  wingX=585;
+  wingX=15;
+  wheelangleR=0;
+  wheelangleB=0;
 }
 
 void draw () {
@@ -36,21 +38,16 @@ void draw () {
     
     fill (157, 156, 156);
     rect (0, 475, 600, 125); //road
-    fill (225);
-    rect (15, 525, 50, 15); //white lines on road
-    rect (115, 525, 50, 15);
-    rect (215, 525, 50, 15);
-    rect (315, 525, 50, 15);
-    rect (415, 525, 50, 15);
-    rect (515, 525, 50, 15);
+    fill (252, 194, 33);
+    rect (0, 525, 600, 8); //yellow line on road
     
     bush (85, 425);
     bush (470, 425);
     
     blackcar (blackcarX, 415);
-    blackcarX=blackcarX+9;
-    if (blackcarX>650) {
-      blackcarX=-50;
+    blackcarX=blackcarX-9;
+    if (blackcarX<-50) {
+      blackcarX=650;
     }
     
     redcar (redcarX, 475);
@@ -59,22 +56,25 @@ void draw () {
       redcarX=-50;
     }
     
-    bird (birdX, 100);
-    birdX=birdX-5;
-    if (birdX>610) {
-      birdX=610;
+    wheelangleR=wheelangleR+8;
+    wheelangleB=wheelangleB-8;
+    
+    bird (birdX, 100, 80);
+    birdX=birdX+5;
+    if (birdX>700) {
+      birdX=-100;
     }
-    wing (wingX, 90, wingangle);
-    wingX=wingX-5;
+    wing (wingX, 105, wingangle);
+    wingX=wingX+5;
     wingcounter=wingcounter+5;
-    if (wingX>615) {
-      wingX=605;
+    if (wingX>705) {
+      wingX=-95;
     }
     if (wingcounter<50) {
       wingangle=0;
     }
     if (wingcounter>50) {
-      wingangle=-90;
+      wingangle=90;
     }
     if (wingcounter==100) {
       wingcounter=0;
@@ -82,7 +82,7 @@ void draw () {
   }
   
   
-  println (mouseX-100, mouseY);
+  println (mouseX-100, mouseY-200);
 }
 
 void key (int x, int y, int angle) {
@@ -123,18 +123,16 @@ void redcar (int x, int y) {
  translate (x, y);
    scale (0.7);
    fill (225, 0, 0);
+   stroke (0);
    rect (0, 0, 200, 100, 45);//the top of the car the last argument is for the roundness of the corners, can also do individually
    fill (186, 221, 224);
    rect (140, 10, 50, 50, 0, 200, 0, 0); //window
    fill (225, 0, 0);
    rect (-25, 50, 300, 85, 50, 50, 20, 20); //the bottom of the car
    fill (0);
-   circle (30, 130, 75); //left wheel
-   circle (185, 130, 75); //right wheel
    rect (-40, 105, 15, 20); //exhaust pipe
-   fill (162, 162, 162);
-   circle (30, 130, 40); //middle of left wheel
-   circle (185, 130, 40); //middle of right wheel
+   wheel (30, 130, wheelangleR);
+   wheel (185, 130, wheelangleR);
  popMatrix ();
 }
 
@@ -146,19 +144,34 @@ void blackcar (int x, int y) {
    stroke (155, 155, 155);
    rect (0, 0, 200, 100, 45);//the top of the car the last argument is for the roundness of the corners, can also do individually
    fill (186, 221, 224);
-   rect (140, 10, 50, 50, 0, 200, 0, 0); //window
+   rect (10, 10, 50, 50, 200, 0, 0, 0); //window
    fill (0);
    stroke (155, 155, 155);
-   rect (-25, 50, 300, 85, 50, 50, 20, 20); //the bottom of the car
+   rect (-75, 50, 300, 85, 50, 50, 20, 20); //the bottom of the car
    fill (0);
-   rect (-40, 105, 15, 20); //exhaust pipe
+   rect (225, 105, 15, 20); //exhaust pipe
    stroke (155, 155, 155);
-   circle (30, 130, 75); //left wheel
-   circle (185, 130, 75); //right wheel
    fill (162, 162, 162);
-   circle (30, 130, 40); //middle of left wheel
-   circle (185, 130, 40); //middle of right wheel
+   wheel (15, 130, wheelangleB);
+   wheel (170, 130, wheelangleB);
  popMatrix ();
+}
+
+void wheel (int x, int y, int angle) {
+  pushMatrix ();
+    translate (x, y);
+    rotate (radians(angle));
+    fill (0);
+    circle (0, 0, 80);
+    fill (162, 162, 162);
+    circle (0, 0, 50);
+    fill (0);
+    circle (0, 0, 38);
+    fill (162, 162, 162);
+    stroke (162, 162, 162);
+    rect (-20, 0, 45, 3); //lines on wheel
+    rect (0, -20, 3, 45);
+  popMatrix ();
 }
 
 void house (int x, int y) {
@@ -166,10 +179,18 @@ void house (int x, int y) {
     translate (x, y);
     stroke (0);
     fill (225);
-    rect (0, 0, 400, 275);
+    rect (0, 0, 400, 275); //main house
     fill (111, 64, 6);
-    triangle (-75, 50, 200, -150, 475, 50);
+    rect (310, -100, 65, 100); //chimney
+    triangle (-75, 50, 200, -150, 475, 50); //roof
+    rect (162, 165, 76, 110); //door
+    fill (250, 199, 58);
+    circle (225, 225, 15);
   popMatrix ();
+}
+
+void smoke (int x, int y) {
+
 }
 
 void bush (int x, int y) {
@@ -184,12 +205,12 @@ void bush (int x, int y) {
   popMatrix ();
 }
 
-void bird (int x, int y) {
+void bird (int x, int y, int angle) {
   pushMatrix ();
     translate (x, y);
-    circle (-20, -20, 25);
-    rotate(QUARTER_PI);
-    ellipse (0, 0, 55, 30);
+    rotate (radians(angle));
+    circle (5, -20, 25); //head
+    ellipse (10, 10, 30, 55); //body
   popMatrix ();
 }
 
@@ -198,6 +219,6 @@ void wing (int x, int y, int angle) {
     translate (x, y);
     rotate(radians(angle));
     fill (0);
-    arc (22, 0, 40, 35, 0, PI);
+    arc (-22, 0, 40, 35, 0, PI);
   popMatrix ();
 }
