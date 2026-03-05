@@ -1,6 +1,6 @@
 //hope: getting a house in the future
 
-int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, smokeX, smokeY, wheelangleR, wheelangleB;
+int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, smokeX, smokeY, wheelangleR, wheelangleB, sky, skycounter, skycounter2;
 
 void setup () {
   size (600, 600);
@@ -14,6 +14,9 @@ void setup () {
   wingX=15;
   wheelangleR=0;
   wheelangleB=0;
+  sky=0;
+  skycounter=-1;
+  skycounter2=0;
 }
 
 void draw () {
@@ -31,8 +34,23 @@ void draw () {
     keyangle=90;
     keyY=450;
     keyX=375;
-    //delay (1000);
-    background (126, 219, 227);
+    
+    background (92+sky, 211+sky, 240+sky);
+    sky=sky+skycounter;
+    skycounter2=skycounter2+1;
+    if (skycounter2<300) {
+      skycounter=-1;
+    }
+    if (skycounter2>300 && skycounter2<600) {
+      skycounter=1;
+    }
+    if (skycounter2>600 && skycounter2<900) {
+      skycounter=0;
+    }
+    if (skycounter2==900) {
+      skycounter2=0;
+      skycounter=-1;
+    }
     
     house (100, 200);
     
@@ -82,7 +100,7 @@ void draw () {
   }
   
   
-  println (mouseX-100, mouseY-200);
+  println (mouseX-10, mouseY-100);
 }
 
 void key (int x, int y, int angle) {
@@ -162,15 +180,16 @@ void wheel (int x, int y, int angle) {
     translate (x, y);
     rotate (radians(angle));
     fill (0);
+    stroke (0);
     circle (0, 0, 80);
     fill (162, 162, 162);
     circle (0, 0, 50);
     fill (0);
-    circle (0, 0, 38);
+    circle (0, 0, 40);
     fill (162, 162, 162);
     stroke (162, 162, 162);
-    rect (-20, 0, 45, 3); //lines on wheel
-    rect (0, -20, 3, 45);
+    rect (-20, -1.5, 40, 3); //lines on wheel
+    rect (-1.5, -20, 3, 40);
   popMatrix ();
 }
 
@@ -209,8 +228,13 @@ void bird (int x, int y, int angle) {
   pushMatrix ();
     translate (x, y);
     rotate (radians(angle));
-    circle (5, -20, 25); //head
+    ellipse (5, -20, 25, 30); //head
     ellipse (10, 10, 30, 55); //body
+    triangle (10, 30, -7, 60, 17, 60); //tail
+    fill (240, 206, 36);
+    triangle (2, -35, 12, -32, 10, -45); //beak
+    fill (0);
+    circle (3, -27, 7); //eye
   popMatrix ();
 }
 
