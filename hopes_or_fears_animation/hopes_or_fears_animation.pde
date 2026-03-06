@@ -1,6 +1,6 @@
 //hope: getting a house in the future
 
-int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, wheelangleR, wheelangleB, sky, skycounter, skycounter2, smokeY, smokecounter;
+int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, wheelangleR, wheelangleB, sky, skycounter, skycounter2, smokeY, smokesize, smokecounter;
 
 void setup () {
   size (600, 600);
@@ -17,7 +17,8 @@ void setup () {
   sky=0;
   skycounter=-1;
   skycounter2=0;
-  smokeY=100;
+  smokeY=125;
+  smokesize=1;
   smokecounter=0;
 }
 
@@ -54,13 +55,26 @@ void draw () {
       skycounter=-1;
     }
 
-    house (100, 200);
     smoke (450, smokeY);
     smokeY=smokeY-1;
-    if (smokeY<0); {
-     smokeY=100;
-      smoke (450, 50);
+    smokesize=smokesize+1;
+    smokecounter=smokecounter+1;
+    if (smokeY<-100) {
+      smokeY=100;
+      smokesize=0;
     }
+    if (smokecounter<100) {
+      smokesize=smokesize+1;
+    }
+    
+    if (smokecounter>100) {
+      smokesize=-1;
+    }
+    if (smokecounter==200) {
+      smokesize=0;
+    }
+    
+    house (100, 200);
     
     fill (157, 156, 156);
     strokeWeight (1);
@@ -112,7 +126,7 @@ void draw () {
   }
   
   
-  println (mouseX-450, mouseY-50);
+  println (mouseX, mouseY);
 }
 
 void key (int x, int y, int angle) {
@@ -266,10 +280,10 @@ void smoke (int x, int y) {
     translate (x, y);
     fill (167);
     noStroke ();
-    circle (13, 34, 25);
-    circle (13, -32, 30);
-    circle (-20, 11, 50);
-    circle (-8, 75, 20);
-    circle (-27, -27, 20);
+    circle (13, 34, 12+smokesize);
+    circle (13, -32, 15+smokesize);
+    circle (-20, 11, 20+smokesize);
+    circle (-8, 75, 10+smokesize);
+    circle (-27, -27, 10+smokesize);
   popMatrix ();
 }
