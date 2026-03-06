@@ -1,6 +1,6 @@
 //hope: getting a house in the future
 
-int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, smokeX, smokeY, wheelangleR, wheelangleB, sky, skycounter, skycounter2;
+int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, wheelangleR, wheelangleB, sky, skycounter, skycounter2, smokeY, smokecounter;
 
 void setup () {
   size (600, 600);
@@ -17,6 +17,8 @@ void setup () {
   sky=0;
   skycounter=-1;
   skycounter2=0;
+  smokeY=100;
+  smokecounter=0;
 }
 
 void draw () {
@@ -51,16 +53,26 @@ void draw () {
       skycounter2=0;
       skycounter=-1;
     }
-    
+
     house (100, 200);
+    smoke (450, smokeY);
+    smokeY=smokeY-1;
+    if (smokeY<0); {
+     smokeY=100;
+      smoke (450, 50);
+    }
     
     fill (157, 156, 156);
+    strokeWeight (1);
+    stroke (0);
     rect (0, 475, 600, 125); //road
     fill (252, 194, 33);
     rect (0, 525, 600, 8); //yellow line on road
     
     bush (85, 425);
     bush (470, 425);
+    bush (20, 425);
+    bush (550, 425);
     
     blackcar (blackcarX, 415);
     blackcarX=blackcarX-9;
@@ -100,7 +112,7 @@ void draw () {
   }
   
   
-  println (mouseX-10, mouseY-100);
+  println (mouseX-450, mouseY-50);
 }
 
 void key (int x, int y, int angle) {
@@ -132,7 +144,6 @@ void hand (int x, int y) {
   quad (-75, -25, 170, -25, 145, 50, -55, 35); //palm
   quad (-200, -20, -35, -30, -55, 35, -200, 80); //arm
   quad (170, -25, 145, 50, 300, -85, 280, -85); //fingers
-  //triangle (45, -30, 73, -26, 150, -25); //thumb
   popMatrix ();
 }
 
@@ -141,6 +152,7 @@ void redcar (int x, int y) {
  translate (x, y);
    scale (0.7);
    fill (225, 0, 0);
+   strokeWeight (2);
    stroke (0);
    rect (0, 0, 200, 100, 45);//the top of the car the last argument is for the roundness of the corners, can also do individually
    fill (186, 221, 224);
@@ -159,6 +171,7 @@ void blackcar (int x, int y) {
  translate (x, y);
    scale (0.6);
    fill (0);
+   strokeWeight (1);
    stroke (155, 155, 155);
    rect (0, 0, 200, 100, 45);//the top of the car the last argument is for the roundness of the corners, can also do individually
    fill (186, 221, 224);
@@ -180,12 +193,12 @@ void wheel (int x, int y, int angle) {
     translate (x, y);
     rotate (radians(angle));
     fill (0);
-    stroke (0);
-    circle (0, 0, 80);
+    stroke (162);
+    circle (0, 0, 80); //main wheel
     fill (162, 162, 162);
-    circle (0, 0, 50);
+    circle (0, 0, 50); //grey circle
     fill (0);
-    circle (0, 0, 40);
+    circle (0, 0, 40); //center black circle
     fill (162, 162, 162);
     stroke (162, 162, 162);
     rect (-20, -1.5, 40, 3); //lines on wheel
@@ -196,6 +209,7 @@ void wheel (int x, int y, int angle) {
 void house (int x, int y) {
   pushMatrix ();
     translate (x, y);
+    strokeWeight (1);
     stroke (0);
     fill (225);
     rect (0, 0, 400, 275); //main house
@@ -204,23 +218,24 @@ void house (int x, int y) {
     triangle (-75, 50, 200, -150, 475, 50); //roof
     rect (162, 165, 76, 110); //door
     fill (250, 199, 58);
-    circle (225, 225, 15);
+    circle (225, 225, 15); //door knob
+    fill (166, 196, 203);
+    stroke (111, 64, 6);
+    strokeWeight (10);
+    rect (42, 100, 80, 90);
+    rect (275, 100, 80, 90);
   popMatrix ();
-}
-
-void smoke (int x, int y) {
-
 }
 
 void bush (int x, int y) {
   pushMatrix ();
     translate (x, y);
     fill (84, 167, 68);
-    stroke (84, 167, 68);
-    circle (0, 0, 100);
-    circle (-50, 5, 90);
-    circle (50, 15, 110);
-    circle (-15 ,25, 105);
+    stroke (84, 167, 60);
+    circle (0, 0, 85);
+    circle (-50, 5, 70);
+    circle (50, 15, 92);
+    circle (-15 ,25, 100);
   popMatrix ();
 }
 
@@ -244,5 +259,17 @@ void wing (int x, int y, int angle) {
     rotate(radians(angle));
     fill (0);
     arc (-22, 0, 40, 35, 0, PI);
+  popMatrix ();
+}
+void smoke (int x, int y) {
+  pushMatrix ();
+    translate (x, y);
+    fill (167);
+    noStroke ();
+    circle (13, 34, 25);
+    circle (13, -32, 30);
+    circle (-20, 11, 50);
+    circle (-8, 75, 20);
+    circle (-27, -27, 20);
   popMatrix ();
 }
