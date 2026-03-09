@@ -1,6 +1,8 @@
 //hope: getting a house in the future
+//a key falls into a hand; i just bought a new house. Then switches to a scene of a house: i have my own house
 
-int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, wheelangleR, wheelangleB, sky, skycounter, skycounter2, smokeY, smokesize, smokecounter;
+int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, wheelangleR, wheelangleB, sky, skycounter, skycounter2;
+int smokeY, smokex1, smokex2, smokev1, smokev2, smokecounter;
 
 void setup () {
   size (600, 600);
@@ -18,7 +20,8 @@ void setup () {
   skycounter=-1;
   skycounter2=0;
   smokeY=125;
-  smokesize=1;
+  smokev1=-1;
+  smokev2=1;
   smokecounter=0;
 }
 
@@ -26,8 +29,8 @@ void draw () {
   background (0);
   
   key (keyX, keyY, keyangle);
-  keyY=keyY+5;
-  if (keyY>300) {
+  keyY=keyY+8;
+  if (keyY>290) {
     keyangle=keyangle+5;
     keyX=keyX+4;
   }
@@ -55,23 +58,37 @@ void draw () {
       skycounter=-1;
     }
 
-    smoke (450, smokeY);
-    smokeY=smokeY-1;
-    smokesize=smokesize+1;
+    smoke (450+smokex1, -32+smokeY);
+    smoke (435+smokex2, -27+smokeY);
+    smoke (435+smokex1, 11+smokeY);
+    smoke (450+smokex2, 34+smokeY);
+    smoke (442+smokex1, 75+smokeY);
+    smoke (450+smokex2, 100+smokeY);
+    smoke (435+smokex1, 125+smokeY);
+    smoke (435+smokex2, 150+smokeY);
+    smoke (450+smokex1, 175+smokeY);
+    smoke (442+smokex2, 200+smokeY);
+    smoke (450+smokex1, 225+smokeY);
+    smoke (435+smokex2, 250+smokeY);
+    smoke (435+smokex1, 275+smokeY);
+    smoke (450+smokex2, 300+smokeY);
+    smokeY=smokeY-2;
+    if (smokeY<-200) {
+      smokeY=0;
+    }
+    smokex1=smokex1+smokev1;
+    smokex2=smokex2+smokev2;
     smokecounter=smokecounter+1;
-    if (smokeY<-100) {
-      smokeY=100;
-      smokesize=0;
+    if (smokecounter<10) {
+      smokev1=-1;
+      smokev2=1;
     }
-    if (smokecounter<100) {
-      smokesize=smokesize+1;
+    if (smokecounter>10) {
+      smokev1=1;
+      smokev2=-1;
     }
-    
-    if (smokecounter>100) {
-      smokesize=-1;
-    }
-    if (smokecounter==200) {
-      smokesize=0;
+    if (smokecounter==20) {
+      smokecounter=0;
     }
     
     house (100, 200);
@@ -89,19 +106,19 @@ void draw () {
     bush (550, 425);
     
     blackcar (blackcarX, 415);
-    blackcarX=blackcarX-9;
+    blackcarX=blackcarX-18;
     if (blackcarX<-50) {
       blackcarX=650;
     }
     
     redcar (redcarX, 475);
-    redcarX=redcarX+10;
+    redcarX=redcarX+20;
     if (redcarX>650) {
       redcarX=-50;
     }
     
-    wheelangleR=wheelangleR+8;
-    wheelangleB=wheelangleB-8;
+    wheelangleR=wheelangleR+15;
+    wheelangleB=wheelangleB-15;
     
     bird (birdX, 100, 80);
     birdX=birdX+5;
@@ -278,12 +295,8 @@ void wing (int x, int y, int angle) {
 void smoke (int x, int y) {
   pushMatrix ();
     translate (x, y);
-    fill (167);
+    fill (200, 75);
     noStroke ();
-    circle (13, 34, 12+smokesize);
-    circle (13, -32, 15+smokesize);
-    circle (-20, 11, 20+smokesize);
-    circle (-8, 75, 10+smokesize);
-    circle (-27, -27, 10+smokesize);
+    circle (0, 0, 60);
   popMatrix ();
 }
