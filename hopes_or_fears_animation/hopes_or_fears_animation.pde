@@ -1,5 +1,5 @@
 //hope: getting a house in the future
-//a key falls into a hand; i just bought a new house. Then switches to a scene of a house: i have my own house
+//a key falls into a hand; i just bought a new house, being given the key to it. Then switches to a scene of a house: i have my own house
 
 int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, wheelangleR, wheelangleB, sky, skycounter, skycounter2;
 int smokeY, smokex1, smokex2, smokev1, smokev2, smokecounter;
@@ -29,65 +29,71 @@ void draw () {
   background (0);
   
   key (keyX, keyY, keyangle);
-  keyY=keyY+8;
+  keyY=keyY+8; //key falls into hand
   if (keyY>290) {
     keyangle=keyangle+5;
     keyX=keyX+4;
   }
   
   hand (200, 500);
-  if (keyangle>90) {
+  if (keyangle>90) {//when key falls into the palm, starts the next scene
     keyangle=90;
     keyY=450;
     keyX=375;
     
     background (92+sky, 211+sky, 240+sky);
+    circle (50, 50, 2);
     sky=sky+skycounter;
     skycounter2=skycounter2+1;
-    if (skycounter2<300) {
+    if (skycounter2<300) {//makes the sky darken
       skycounter=-1;
     }
-    if (skycounter2>300 && skycounter2<600) {
+    if (skycounter2>300 && skycounter2<600) {//makes the sky lighten
       skycounter=1;
-    }
-    if (skycounter2>600 && skycounter2<900) {
+   }
+    if (skycounter2>600 && skycounter2<900) {//keeps the sky at a light blue for short time
       skycounter=0;
     }
-    if (skycounter2==900) {
+    if (skycounter2==900) {//resets counter and makes sure sky will darken again
       skycounter2=0;
       skycounter=-1;
     }
 
-    smoke (450+smokex1, -32+smokeY);
-    smoke (435+smokex2, -27+smokeY);
-    smoke (435+smokex1, 11+smokeY);
-    smoke (450+smokex2, 34+smokeY);
-    smoke (442+smokex1, 75+smokeY);
-    smoke (450+smokex2, 100+smokeY);
-    smoke (435+smokex1, 125+smokeY);
-    smoke (435+smokex2, 150+smokeY);
+    smoke (450+smokex1, -32+smokeY); //the chimney smoke
+    smoke (430+smokex2, -27+smokeY);
+    smoke (450+smokex1, 11+smokeY);
+    smoke (430+smokex2, 34+smokeY);
+    smoke (450+smokex1, 75+smokeY);
+    smoke (430+smokex2, 100+smokeY);
+    smoke (450+smokex1, 125+smokeY);
+    smoke (430+smokex2, 170+smokeY);
     smoke (450+smokex1, 175+smokeY);
-    smoke (442+smokex2, 200+smokeY);
-    smoke (450+smokex1, 225+smokeY);
-    smoke (435+smokex2, 250+smokeY);
-    smoke (435+smokex1, 275+smokeY);
-    smoke (450+smokex2, 300+smokeY);
+    smoke (430+smokex2, 215+smokeY);
+    smoke (450+smokex2, 250+smokeY);
+    smoke (430+smokex2, 375+smokeY);
+    smoke (450+smokex1, 400+smokeY);
+    smoke (430+smokex2, 415+smokeY);
+    smoke (450+smokex1, 450+smokeY);
+    smoke (450+smokex1, 475+smokeY);
+    smoke (430+smokex2, 480+smokeY);
+    smoke (450+smokex1, 520+smokeY);
+    smoke (430+smokex2, 550+smokeY);
     smokeY=smokeY-2;
-    if (smokeY<-200) {
+    if (smokeY<-180) {
       smokeY=0;
     }
-    smokex1=smokex1+smokev1;
+    smokex1=smokex1+smokev1; //this stuff makes the smoke bounce sideways
     smokex2=smokex2+smokev2;
     smokecounter=smokecounter+1;
-    if (smokecounter<10) {
+    if (smokecounter<15) {
       smokev1=-1;
       smokev2=1;
     }
-    if (smokecounter>10) {
+    if (smokecounter>15) {
       smokev1=1;
       smokev2=-1;
     }
-    if (smokecounter==20) {
+    if (smokecounter==30) {
       smokecounter=0;
     }
     
@@ -106,17 +112,15 @@ void draw () {
     bush (550, 425);
     
     blackcar (blackcarX, 415);
-    blackcarX=blackcarX-18;
+    blackcarX=blackcarX-15;
     if (blackcarX<-50) {
       blackcarX=650;
     }
-    
     redcar (redcarX, 475);
     redcarX=redcarX+20;
     if (redcarX>650) {
       redcarX=-50;
     }
-    
     wheelangleR=wheelangleR+15;
     wheelangleB=wheelangleB-15;
     
@@ -125,7 +129,7 @@ void draw () {
     if (birdX>700) {
       birdX=-100;
     }
-    wing (wingX, 105, wingangle);
+    wing (wingX, 105, wingangle); //for making the wing flap
     wingX=wingX+5;
     wingcounter=wingcounter+5;
     if (wingX>705) {
@@ -143,7 +147,7 @@ void draw () {
   }
   
   
-  println (mouseX, mouseY);
+  println (mouseX, mouseY-475);
 }
 
 void key (int x, int y, int angle) {
@@ -194,6 +198,17 @@ void redcar (int x, int y) {
    rect (-40, 105, 15, 20); //exhaust pipe
    wheel (30, 130, wheelangleR);
    wheel (185, 130, wheelangleR);
+   strokeWeight (1); //headlights
+   stroke (0);
+   fill (237, 213, 72);
+   circle (245, 80, 55);
+   stroke (225, 0, 0);
+   strokeWeight (2);
+   fill (225, 0, 0);
+   arc (245, 80, 55, 55, 0, PI+HALF_PI);
+   fill (237, 213, 72, 75); //the beams of light
+   noStroke ();
+   triangle (380, 40, 240, 70, 380, 90);
  popMatrix ();
 }
 
@@ -216,6 +231,13 @@ void blackcar (int x, int y) {
    fill (162, 162, 162);
    wheel (15, 130, wheelangleB);
    wheel (170, 130, wheelangleB);
+   strokeWeight (1); //headlights
+   stroke (0);
+   fill (237, 213, 72);
+   arc (-45, 80, 55, 55, PI, PI+HALF_PI);
+   fill (237, 213, 72, 75); //the beams of light
+   noStroke ();
+   triangle (-180, 40, -40, 70, -180, 90);
  popMatrix ();
 }
 
@@ -245,7 +267,7 @@ void house (int x, int y) {
     fill (225);
     rect (0, 0, 400, 275); //main house
     fill (111, 64, 6);
-    rect (310, -100, 65, 100); //chimney
+    rect (300, -100, 90, 100); //chimney
     triangle (-75, 50, 200, -150, 475, 50); //roof
     rect (162, 165, 76, 110); //door
     fill (250, 199, 58);
@@ -274,6 +296,9 @@ void bird (int x, int y, int angle) {
   pushMatrix ();
     translate (x, y);
     rotate (radians(angle));
+    fill (167);
+    stroke (167);
+    strokeWeight (1);
     ellipse (5, -20, 25, 30); //head
     ellipse (10, 10, 30, 55); //body
     triangle (10, 30, -7, 60, 17, 60); //tail
