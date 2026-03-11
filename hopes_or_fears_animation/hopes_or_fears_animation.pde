@@ -2,7 +2,7 @@
 //a key falls into a hand; i just bought a new house, being given the key to it. Then switches to a scene of a house: i have my own house
 
 int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, wheelangleR, wheelangleB, sky, skycounter, skycounter2;
-int smokeY, smokex1, smokex2, smokev1, smokev2, smokecounter;
+int smokeY, smokex1, smokex2, smokev1, smokev2, smokecounter, T, Tcounter, Tadd;
 
 void setup () {
   size (600, 600);
@@ -23,6 +23,9 @@ void setup () {
   smokev1=-1;
   smokev2=1;
   smokecounter=0;
+  T=0;
+  Tcounter=0;
+  Tadd=0;
 }
 
 void draw () {
@@ -42,7 +45,6 @@ void draw () {
     keyX=375;
     
     background (92+sky, 211+sky, 240+sky);
-    circle (50, 50, 2);
     sky=sky+skycounter;
     skycounter2=skycounter2+1;
     if (skycounter2<300) {//makes the sky darken
@@ -144,8 +146,32 @@ void draw () {
     if (wingcounter==100) {
       wingcounter=0;
     }
+    
+    fill (0, T); //this makes the whole screen darken and lighten for night and day
+    T=T+Tadd;
+    rect (0, 0, width, height);
+    Tcounter=Tcounter+1;
+    if (Tcounter<150) {//makes screen
+      Tadd=1;
+    }
+    if (Tcounter>150 && Tcounter<450) {//keeps the screen at that darkness
+      Tadd=0;
+    }
+    if (Tcounter>450 && Tcounter<600) {//makes the screen lighten
+      Tadd=-1;
+   }
+    if (Tcounter>600 && Tcounter<900) {//keeps the screen bright for a short amount of time
+      Tadd=0;
+    }
+    if (Tcounter==900) {//resets counter and makes sure screen will darken again
+      Tcounter=0;
+      Tadd=1;
+    }
+    
+    headlightR (redcarX, 475); //lights for red car
+    headlightB (blackcarX, 415); //lights for black car
+    
   }
-  
   
   println (mouseX, mouseY-475);
 }
@@ -206,10 +232,17 @@ void redcar (int x, int y) {
    strokeWeight (2);
    fill (225, 0, 0);
    arc (245, 80, 55, 55, 0, PI+HALF_PI);
-   fill (237, 213, 72, 75); //the beams of light
-   noStroke ();
-   triangle (380, 40, 240, 70, 380, 90);
  popMatrix ();
+}
+
+void headlightR (int x, int y) {//lights for red car
+  pushMatrix ();
+    translate (x, y);
+    scale (0.7);
+    fill (237, 213, 72, 75); //the beams of light
+    noStroke ();
+    triangle (380, 40, 240, 70, 380, 90);
+   popMatrix ();
 }
 
 void blackcar (int x, int y) {
@@ -235,10 +268,17 @@ void blackcar (int x, int y) {
    stroke (0);
    fill (237, 213, 72);
    arc (-45, 80, 55, 55, PI, PI+HALF_PI);
-   fill (237, 213, 72, 75); //the beams of light
-   noStroke ();
-   triangle (-180, 40, -40, 70, -180, 90);
  popMatrix ();
+}
+
+void headlightB (int x, int y) {//lights for black car
+  pushMatrix ();
+    translate (x, y);
+    scale (0.6);
+    fill (237, 213, 72, 75); //the beams of light
+    noStroke ();
+    triangle (-180, 40, -40, 70, -180, 90);
+  popMatrix ();
 }
 
 void wheel (int x, int y, int angle) {
