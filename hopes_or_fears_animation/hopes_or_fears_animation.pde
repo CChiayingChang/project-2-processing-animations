@@ -1,7 +1,7 @@
 //hope: getting a house in the future
 //a key falls into a hand; i just bought a new house, being given the key to it. Then switches to a scene of a house: i have my own house
 
-int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, wheelangleR, wheelangleB, sky, skycounter, skycounter2;
+int keyY, keyX, keyangle, redcarX, blackcarX, wingcounter, wingangle, birdX, wingX, wheelangleR, wheelangleB, sky, skyadd, skycounter, scenetimer;
 int smokeY, smokex1, smokex2, smokev1, smokev2, smokecounter, T, Tcounter, Tadd;
 
 void setup () {
@@ -17,8 +17,8 @@ void setup () {
   wheelangleR=0;
   wheelangleB=0;
   sky=0;
-  skycounter=-1;
-  skycounter2=0;
+  skyadd=-1;
+  skycounter=0;
   smokeY=125;
   smokev1=-1;
   smokev2=1;
@@ -26,6 +26,7 @@ void setup () {
   T=0;
   Tcounter=0;
   Tadd=0;
+  scenetimer=0;
 }
 
 void draw () {
@@ -39,29 +40,33 @@ void draw () {
   }
   
   hand (200, 500);
-  if (keyangle>90) {//when key falls into the palm, starts the next scene
+  
+  if (keyangle>90) {//starts a timer, and pauses the scene for a moment
+    scenetimer=scenetimer+1;
     keyangle=90;
-    keyY=450;
+    keyY=440;
     keyX=375;
+  }
+  if (scenetimer>70) {//when the timer is up, next scene starts
     
-    background (92+sky, 211+sky, 240+sky);
-    sky=sky+skycounter;
-    skycounter2=skycounter2+1;
-    if (skycounter2<300) {//makes the sky darken
-      skycounter=-1;
+    background (92+sky, 211+sky, 240+sky); //the sky: will darken and lighten for night and day
+    sky=sky+skyadd;
+    skycounter=skycounter+1;
+    if (skycounter<300) {//makes the sky darken
+      skyadd=-1;
     }
-    if (skycounter2>300 && skycounter2<600) {//makes the sky lighten
-      skycounter=1;
+    if (skycounter>300 && skycounter<600) {//makes the sky lighten
+      skyadd=1;
    }
-    if (skycounter2>600 && skycounter2<900) {//keeps the sky at a light blue for short time
+    if (skycounter>600 && skycounter<1500) {//keeps the sky at a light blue for short time
       skycounter=0;
     }
-    if (skycounter2==900) {//resets counter and makes sure sky will darken again
-      skycounter2=0;
-      skycounter=-1;
+    if (skycounter==1500) {//resets counter and makes sure sky will darken again
+      skycounter=0;
+      skyadd=-1;
     }
 
-    smoke (450+smokex1, -32+smokeY); //the chimney smoke
+    smoke (450+smokex1, -32+smokeY); //chimney smoke
     smoke (430+smokex2, -27+smokeY);
     smoke (450+smokex1, 11+smokeY);
     smoke (430+smokex2, 34+smokeY);
@@ -84,7 +89,7 @@ void draw () {
     if (smokeY<-180) {
       smokeY=0;
     }
-    smokex1=smokex1+smokev1; //this stuff makes the smoke bounce sideways
+    smokex1=smokex1+smokev1; //smoke will bounce sideways
     smokex2=smokex2+smokev2;
     smokecounter=smokecounter+1;
     if (smokecounter<15) {
@@ -123,8 +128,8 @@ void draw () {
     if (redcarX>650) {
       redcarX=-50;
     }
-    wheelangleR=wheelangleR+15;
-    wheelangleB=wheelangleB-15;
+    wheelangleR=wheelangleR+15; //red car wheels spin
+    wheelangleB=wheelangleB-15; //black car wheels spin
     
     bird (birdX, 100, 80);
     birdX=birdX+5;
@@ -151,13 +156,13 @@ void draw () {
     T=T+Tadd;
     rect (0, 0, width, height);
     Tcounter=Tcounter+1;
-    if (Tcounter<150) {//makes screen
+    if (Tcounter<200) {//makes screen darken
       Tadd=1;
     }
-    if (Tcounter>150 && Tcounter<450) {//keeps the screen at that darkness
+    if (Tcounter>150 && Tcounter<400) {//keeps the screen at that level of darkness
       Tadd=0;
     }
-    if (Tcounter>450 && Tcounter<600) {//makes the screen lighten
+    if (Tcounter>400 && Tcounter<600) {//makes the screen lighten
       Tadd=-1;
    }
     if (Tcounter>600 && Tcounter<900) {//keeps the screen bright for a short amount of time
@@ -165,15 +170,33 @@ void draw () {
     }
     if (Tcounter==900) {//resets counter and makes sure screen will darken again
       Tcounter=0;
-      Tadd=1;
+      Tadd=2;
     }
+    
+    
+    //background (92+sky, 211+sky, 240+sky); //the sky: will darken and lighten for night and day
+    //sky=sky+skyadd;
+    //skycounter=skycounter+1;
+    //if (skycounter<300) {//makes the sky darken
+      //skyadd=-1;
+    //}
+    //if (skycounter>300 && skycounter<600) {//makes the sky lighten
+      //skyadd=1;
+   //}
+    //if (skycounter>600 && skycounter<900) {//keeps the sky at a light blue for short time
+      //skycounter=0;
+    //}
+    //if (skycounter==900) {//resets counter and makes sure sky will darken again
+      //skycounter=0;
+      //skyadd=-1;
+    //}
     
     headlightR (redcarX, 475); //lights for red car
     headlightB (blackcarX, 415); //lights for black car
     
   }
   
-  println (mouseX, mouseY-475);
+  println (mouseX-100, mouseY-200);
 }
 
 void key (int x, int y, int angle) {
@@ -215,7 +238,7 @@ void redcar (int x, int y) {
    fill (225, 0, 0);
    strokeWeight (2);
    stroke (0);
-   rect (0, 0, 200, 100, 45);//the top of the car the last argument is for the roundness of the corners, can also do individually
+   rect (0, 0, 200, 100, 45);//the top of the car
    fill (186, 221, 224);
    rect (140, 10, 50, 50, 0, 200, 0, 0); //window
    fill (225, 0, 0);
@@ -224,10 +247,10 @@ void redcar (int x, int y) {
    rect (-40, 105, 15, 20); //exhaust pipe
    wheel (30, 130, wheelangleR);
    wheel (185, 130, wheelangleR);
-   strokeWeight (1); //headlights
+   strokeWeight (1);
    stroke (0);
    fill (237, 213, 72);
-   circle (245, 80, 55);
+   circle (245, 80, 55);  //headlight
    stroke (225, 0, 0);
    strokeWeight (2);
    fill (225, 0, 0);
@@ -235,13 +258,13 @@ void redcar (int x, int y) {
  popMatrix ();
 }
 
-void headlightR (int x, int y) {//lights for red car
+void headlightR (int x, int y) {//light beam for red car
   pushMatrix ();
     translate (x, y);
     scale (0.7);
-    fill (237, 213, 72, 75); //the beams of light
+    fill (237, 213, 72, 100);
     noStroke ();
-    triangle (380, 40, 240, 70, 380, 90);
+    triangle (380, 30, 240, 70, 380, 100);
    popMatrix ();
 }
 
@@ -252,7 +275,7 @@ void blackcar (int x, int y) {
    fill (0);
    strokeWeight (1);
    stroke (155, 155, 155);
-   rect (0, 0, 200, 100, 45);//the top of the car the last argument is for the roundness of the corners, can also do individually
+   rect (0, 0, 200, 100, 45);//the top of the car
    fill (186, 221, 224);
    rect (10, 10, 50, 50, 200, 0, 0, 0); //window
    fill (0);
@@ -264,7 +287,7 @@ void blackcar (int x, int y) {
    fill (162, 162, 162);
    wheel (15, 130, wheelangleB);
    wheel (170, 130, wheelangleB);
-   strokeWeight (1); //headlights
+   strokeWeight (1); //headlight
    stroke (0);
    fill (237, 213, 72);
    arc (-45, 80, 55, 55, PI, PI+HALF_PI);
@@ -275,9 +298,9 @@ void headlightB (int x, int y) {//lights for black car
   pushMatrix ();
     translate (x, y);
     scale (0.6);
-    fill (237, 213, 72, 75); //the beams of light
+    fill (237, 213, 72, 100);
     noStroke ();
-    triangle (-180, 40, -40, 70, -180, 90);
+    triangle (-180, 30, -40, 70, -180, 100);
   popMatrix ();
 }
 
@@ -315,8 +338,14 @@ void house (int x, int y) {
     fill (166, 196, 203);
     stroke (111, 64, 6);
     strokeWeight (10);
-    rect (42, 100, 80, 90);
+    rect (42, 100, 80, 90); //windows
     rect (275, 100, 80, 90);
+    strokeWeight (3);
+    stroke (225);
+    line (90, 120, 60, 150); //lines on window (left)
+    line (107, 137, 77, 167);
+    line (323, 120, 293, 150); //lines on window (right)
+    line (340, 137, 310, 167);
   popMatrix ();
 }
 
