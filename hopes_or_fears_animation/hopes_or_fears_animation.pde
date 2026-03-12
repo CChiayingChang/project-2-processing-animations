@@ -58,10 +58,11 @@ void draw () {
     if (skycounter>300 && skycounter<600) {//makes the sky lighten
       skyadd=1;
    }
-    if (skycounter>600 && skycounter<1500) {//keeps the sky at a light blue for short time
-      skycounter=0;
+    if (skycounter>600 && skycounter<900) {//keeps the sky at a light blue for short time
+      skyadd=0;
+      sky=0;
     }
-    if (skycounter==1500) {//resets counter and makes sure sky will darken again
+    if (skycounter==900) {//resets counter and makes sure sky will darken again
       skycounter=0;
       skyadd=-1;
     }
@@ -156,40 +157,23 @@ void draw () {
     T=T+Tadd;
     rect (0, 0, width, height);
     Tcounter=Tcounter+1;
-    if (Tcounter<200) {//makes screen darken
+    if (Tcounter<150) {//makes screen darken
       Tadd=1;
     }
     if (Tcounter>150 && Tcounter<400) {//keeps the screen at that level of darkness
       Tadd=0;
     }
     if (Tcounter>400 && Tcounter<600) {//makes the screen lighten
-      Tadd=-1;
+      Tadd=-2;
    }
     if (Tcounter>600 && Tcounter<900) {//keeps the screen bright for a short amount of time
       Tadd=0;
+      T=0;
     }
     if (Tcounter==900) {//resets counter and makes sure screen will darken again
       Tcounter=0;
       Tadd=2;
     }
-    
-    
-    //background (92+sky, 211+sky, 240+sky); //the sky: will darken and lighten for night and day
-    //sky=sky+skyadd;
-    //skycounter=skycounter+1;
-    //if (skycounter<300) {//makes the sky darken
-      //skyadd=-1;
-    //}
-    //if (skycounter>300 && skycounter<600) {//makes the sky lighten
-      //skyadd=1;
-   //}
-    //if (skycounter>600 && skycounter<900) {//keeps the sky at a light blue for short time
-      //skycounter=0;
-    //}
-    //if (skycounter==900) {//resets counter and makes sure sky will darken again
-      //skycounter=0;
-      //skyadd=-1;
-    //}
     
     headlightR (redcarX, 475); //lights for red car
     headlightB (blackcarX, 415); //lights for black car
